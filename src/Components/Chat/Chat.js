@@ -7,18 +7,22 @@ import Messages from '../Messages/Messages';
 import Input from '../Input/Input';
 import TextContainer from '../TextContainer/TextContainer';
 
-let socket;
+import {useLocation} from "react-router-dom";
 
-const Chat = () => {
+let socket;
+const ENDPOINT = 'https://chat-applicatn-react.herokuapp.com/';
+
+const Chat = ({location}) => {
+
+	const loc = useLocation();
 	const [name, setName] = useState('');
 	const [room, setRoom] = useState('');
 	const [users, setUsers] = useState('');
 	const [message, setMessage] = useState('');
 	const [messages, setMessages] = useState([]);
-	const ENDPOINT = 'https://chat-applicatn-react.herokuapp.com/';
 
 	useEffect(() => {
-		const {name, room} = queryString.parse(window.location.search)
+		const {name, room} = queryString.parse(loc.search)
 		socket = io(ENDPOINT)
 		setName(name)
 		setRoom(room)
@@ -26,7 +30,7 @@ const Chat = () => {
 
 		});
 
-	}, [ENDPOINT, window.location.search])
+	}, [ENDPOINT, loc.search])
 
 	useEffect(() => {
 		socket.on('message', (message) => {
@@ -44,8 +48,6 @@ const Chat = () => {
 			socket.emit('sendMessage', message, () => setMessage(''))
 		}
 	}
-
-	console.log(message, messages)
 
 	return (
 		<div className="outerContainer">
