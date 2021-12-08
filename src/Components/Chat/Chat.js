@@ -30,7 +30,7 @@ const Chat = ({location}) => {
 
 		});
 
-	}, [ENDPOINT, loc.search])
+	}, [loc.search])
 
 	useEffect(() => {
 		socket.on('message', (message) => {
